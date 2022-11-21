@@ -127,3 +127,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Cython debug symbols
+cython_debug/
+.secrets.toml
+schema.graphql
+
+/data
+
+production.env

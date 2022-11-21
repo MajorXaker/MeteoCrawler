@@ -1,0 +1,20 @@
+[default]
+    DATABASE_DRIVER = "postgresql+psycopg2"
+    DATABASE_HOST = "localhost"
+    DATABASE_PORT = "5432"
+    DATABASE_USER = "postgres"
+    DATABASE_PASSWORD = "postgres"
+    DATABASE_DB = "postgres"
+    DATABASE_ECHO_MODE = false
+
+    METEO_BY_COLLECT_ANECDOTES = true
+    METEO_BY_COLLECT_WISE_PHRASES = true
+
+
+
+
+
+
+
+
+
