@@ -40,24 +40,24 @@ class MeteoBySpider(BaseSpider):
     }
     by_tz = datetime.timezone(datetime.timedelta(hours=-3))
 
-    coordinates_mapping = {
-        "baranavichy": (53.1159, 25.9912),
-        "bobruysk": (53.1159, 25.9912),
-        "borisov": (54.2528, 28.4566),
-        "brest": (52.1267, 23.6666),
-        "vitebsk": (55.1771, 30.2217),
-        "gomel": (52.4351, 31.0549),
-        "grodno": (53.6603, 23.8166),
-        "lida": (53.8809, 25.3029),
-        "minsk": (53.8533, 27.8503),
-        "mogilev": (53.9102, 30.3501),
-        "mozyr": (52.0434, 29.2332),
-        "orsha": (54.509167, 30.425833),
-        "pinsk": (52.1101, 26.0833),
-        "polotsk": (55.4773, 28.8),
-        "slutsk": (53.0102, 27.5499),
-        "salihorsk": (52.7984, 27.5407),
-    }
+    # coordinates_mapping = {
+    #     "baranavichy": (53.1159, 25.9912),
+    #     "bobruysk": (53.1159, 25.9912),
+    #     "borisov": (54.2528, 28.4566),
+    #     "brest": (52.1267, 23.6666),
+    #     "vitebsk": (55.1771, 30.2217),
+    #     "gomel": (52.4351, 31.0549),
+    #     "grodno": (53.6603, 23.8166),
+    #     "lida": (53.8809, 25.3029),
+    #     "minsk": (53.8533, 27.8503),
+    #     "mogilev": (53.9102, 30.3501),
+    #     "mozyr": (52.0434, 29.2332),
+    #     "orsha": (54.509167, 30.425833),
+    #     "pinsk": (52.1101, 26.0833),
+    #     "polotsk": (55.4773, 28.8),
+    #     "slutsk": (53.0102, 27.5499),
+    #     "salihorsk": (52.7984, 27.5407),
+    # }
 
     @staticmethod
     def generate_dates(dates: DateSpan) -> List[Arrow]:
@@ -71,7 +71,7 @@ class MeteoBySpider(BaseSpider):
     @staticmethod
     def split_into_span(string_values: str) -> Span:
         vals = [int(x) for x in string_values.split("…")]
-        return Span(max=max(vals), min=min(vals))
+        return Span(vals)
 
     def locate_temp(self, values: list) -> Span:
         res = list()
@@ -116,11 +116,10 @@ class MeteoBySpider(BaseSpider):
             weather_item = Weather(
                 timedate=date.shift(hours=time).astimezone(self.by_tz),
                 weather_type_raw=weather_type_raw.strip(),
-                location_lat=self.coordinates_mapping[self.city][0],
-                location_lon=self.coordinates_mapping[self.city][1],
-                atm_pressure=Span(pressure_raw),
-                humidity=Span(humidity_raw),
-                wind_speed=Span(wind_speed_raw),
+                city_name=self.city,
+                atm_pressure=self.split_into_span(pressure_raw),
+                humidity=self.split_into_span(humidity_raw),
+                wind_speed=self.split_into_span(wind_speed_raw),
                 wind_direction=self.wind_direction_mapping[wind_direction_raw],
                 temp=self.locate_temp(temp_raw),
             )

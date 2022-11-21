@@ -13,6 +13,8 @@ psycopg2-binary = "*"
 yarl = "*"
 httpx = "*"
 arrow = "*"
+asyncpg = "*"
+datetime = "*"
 
 [dev-packages]
 black = "*"

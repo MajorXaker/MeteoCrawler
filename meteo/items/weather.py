@@ -16,6 +16,9 @@ class Span:
         self.max = max(vals)
         self.min = min(vals)
 
+    def __repr__(self):
+        return f"Span (min={self.min}, max={self.max})"
+
 
 class Weather(pydantic.BaseModel):
     class Config:
@@ -25,8 +28,7 @@ class Weather(pydantic.BaseModel):
     weather_type_raw: str
     weather_type: Optional[WeatherType]
     temp: Span
-    location_lat: float
-    location_lon: float
+    city_name: str
     atm_pressure: Span
     humidity: Optional[Span]
     wind_speed: Span
