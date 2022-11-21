@@ -34,33 +34,45 @@ class MeteoPipeline:
                 column_name = column_to_fill.key
                 if column_name == "id":
                     continue
+
                 min_or_max = re.findall("_min|_max", column_name)
                 if min_or_max:
                     min_or_max = min_or_max[0].strip("_")
                     column_name = re.sub("_min|_max", "", column_name)
                     value = getattr(getattr(weather, column_name), min_or_max)
+                elif column_name == "city_id":
+                    value = city_id.id
                 else:
                     value = getattr(weather, column_name)
                 db_item[column_to_fill] = value
 
-            if self.is_new_value(session=city_id, datetime=weather.timedate):
+            if not self.is_weather_entry_exists(session=session, city_id=city_id.id, datetime=weather.timedate):
                 session.execute(sa.insert(DbWeather).values(db_item))
+                session.commit()
 
         return weather
 
-    def process_anecdote_item(self, item: Anecdote):
-        with open("anecdotes.txt", "w") as file:
+    @staticmethod
+    def process_anecdote_item(item: Anecdote):
+        with open("anecdotes.txt", "a+") as file:
             file.writelines(item.text)
+            file.writelines("\n")
+            file.writelines("\n")
+
         return item
 
-    def process_wise_phrase_item(self, item: WisePhrase):
-        with open("wise_phrases.txt", "w") as file:
+    @staticmethod
+    def process_wise_phrase_item(item: WisePhrase):
+        with open("wise_phrases.txt", "a+") as file:
             file.writelines(item.text)
+            file.writelines("\n")
+            file.writelines("\n")
         return item
 
-    def is_new_value(self, session, city_id: int, datetime):
+    @staticmethod
+    def is_weather_entry_exists(session, city_id: int, datetime):
         exists = session.execute(sa.select(DbWeather).where(
             DbWeather.city_id == city_id,
             DbWeather.timedate == datetime
         )).fetchone()
-        return False if exists else True
+        return True if exists else False

@@ -86,8 +86,6 @@ class MeteoBySpider(BaseSpider):
     def crawl_calendar(self, dates: DateSpan):
         if not self.city:
             raise ValueError("meteo_by spider requires a city: -a city=minsk")
-        if self.city not in self.coordinates_mapping:
-            raise ValueError(f"meteo_by does not cover {self.city}")
         dates_pack = self.generate_dates(dates)
         for date in dates_pack:
             yield scrapy.Request(

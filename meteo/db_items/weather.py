@@ -17,7 +17,7 @@ class Weather(Model):
     temp_max = sa.Column(sa.Integer, nullable=False)
     city_id = sa.Column(
         sa.Integer,
-        sa.ForeignKey("city.id", ondelete="CASCADE"),
+        sa.ForeignKey("cities.id", ondelete="CASCADE"),
         index=True,
         nullable=False,
     )
@@ -28,6 +28,6 @@ class Weather(Model):
     wind_speed_min = sa.Column(sa.Integer)
     wind_speed_max = sa.Column(sa.Integer)
     wind_direction = sa.Column(sa.String)
-    wind_unstable = sa.Column(sa.Boolean, nullable=False, server_default="False")
+    wind_unstable = sa.Column(sa.Boolean)
     precipitation_per_hour = sa.Column(sa.Float)
     snow_level = sa.Column(sa.Float)

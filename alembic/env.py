@@ -1,15 +1,15 @@
 from logging.config import fileConfig
 
+from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from alembic import context
+from meteo.db_items.base_engine import Model
 from utils.config import settings as s
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-aaa = 5
-from meteo.meteo.db_items.base_engine import Model
+
 
 config = context.config
 
