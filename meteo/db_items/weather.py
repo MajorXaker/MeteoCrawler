@@ -13,6 +13,8 @@ class Weather(Model):
     timedate = sa.Column(sa.DateTime, nullable=False)
     weather_type_raw = sa.Column(sa.String)
     weather_type = sa.Column(sa.String)
+    precipitation_type = sa.Column(sa.String)
+    weather_quality = sa.Column(sa.String, nullable=False)
     temp_min = sa.Column(sa.Integer, nullable=False)
     temp_max = sa.Column(sa.Integer, nullable=False)
     city_id = sa.Column(
